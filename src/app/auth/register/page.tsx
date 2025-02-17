@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -24,8 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { supabase } from "@/lib/supabase/supabse";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 
 // Schema de validação atualizado
@@ -83,7 +83,7 @@ export default function Register() {
       3: ["foundUs"],
       4: [], // Não valida automaticamente o step 4
     }[step];
-
+    //@ts-ignore
     return await form.trigger(stepFields);
   };
 
@@ -95,12 +95,10 @@ export default function Register() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (values: any) => {
     console.log(values);
-    const { data: register, error: errorRegister } = await supabase.auth.signUp(
-      {
-        email: values.email,
-        password: values.password,
-      }
-    );
+    const { error: errorRegister } = await supabase.auth.signUp({
+      email: values.email,
+      password: values.password,
+    });
     if (errorRegister) {
       if (errorRegister.code === "user_already_exists") {
         showError("Esse usuário já existe"); // Define a mensagem de erro
